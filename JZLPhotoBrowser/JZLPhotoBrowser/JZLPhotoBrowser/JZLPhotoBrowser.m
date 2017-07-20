@@ -143,9 +143,7 @@
         [scrollView addSubview:progressView];
         
         [self.bgScrollView addSubview:scrollView];
-        [[SDImageCache sharedImageCache] queryDiskCacheForKey:self.urlArr[i] done:^(UIImage *image, SDImageCacheType cacheType) {
-            
-        }];
+
         
         [photo sd_setImageWithPreviousCachedImageWithURL:[NSURL URLWithString:self.urlArr[i]] andPlaceholderImage:nil options:SDWebImageRetryFailed | SDWebImageLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
 
