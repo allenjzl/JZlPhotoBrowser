@@ -233,13 +233,16 @@
         scrollView.contentOffset = CGPointMake(0, 0);
     }
     [UIView animateWithDuration:0.3 animations:^{
+        [self.indexLbl removeFromSuperview];
+        [self.saveBtn removeFromSuperview];
         //如果没传入原始的图片的frame,则不展示缩放动画
         if (self.originalImageViewArr.count == 0) {
             NSLog(@"========展示缩放动画需要传入原始图片的frame==========");
             self.blackView.alpha = 0;
             //设置一个缩放动画,防止缩放很丑,如果没有传原始图片的frame,并且不想要这个动画,直接把下面两句代码注释掉即可
-            photo.bounds = CGRectMake(0, 0, 0, 0);
-            photo.center = CGPointMake(ScreenWidth / 2, ScreenHeight /2);
+//            photo.bounds = CGRectMake(0, 0, 0, 0);
+//            photo.center = CGPointMake(ScreenWidth / 2, ScreenHeight /2);
+            photo.alpha = 0;
         }else {
             photo.frame = CGRectFromString(self.originalImageViewArr[scrollView.tag]);
             self.blackView.alpha = 0;
