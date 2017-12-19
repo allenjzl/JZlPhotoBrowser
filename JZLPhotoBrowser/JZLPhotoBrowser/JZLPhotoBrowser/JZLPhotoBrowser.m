@@ -141,6 +141,7 @@
         
         [scrollView addSubview:photo];
         [scrollView addSubview:progressView];
+        [self.smallScViewArray addObject:scrollView];
         
         [self.bgScrollView addSubview:scrollView];
 
@@ -224,13 +225,17 @@
     
     
     /** 点击事件 */
+/** 图片点击事件 */
 - (void)photoTap: (UIGestureRecognizer *)photoTap {
-    JZLPhoto *photo = (JZLPhoto *)photoTap.view;
-    UIScrollView *scrollView = (UIScrollView *)photo.superview;
-    scrollView.zoomScale = 1.0;
+    NSInteger index = self.bgScrollView.contentOffset.x / ScreenWidth;
+    JZLPhoto *photo = self.photos[index];
+    UIScrollView *smScrollView =self.smallScViewArray[index];
+    //    JZLPhoto *photo = (JZLPhoto *)photoTap.view;
+    //    UIScrollView *scrollView = (UIScrollView *)photo.superview;
+    smScrollView.zoomScale = 1.0;
     //1.1如果是长图片先将其移动到CGPointMake(0, 0)在缩放回去
     if (CGRectGetHeight(photo.frame)>ScreenHeight) {
-        scrollView.contentOffset = CGPointMake(0, 0);
+        smScrollView.contentOffset = CGPointMake(0, 0);
     }
     [UIView animateWithDuration:0.3 animations:^{
         [self.indexLbl removeFromSuperview];
@@ -240,11 +245,11 @@
             NSLog(@"========展示缩放动画需要传入原始图片的frame==========");
             self.blackView.alpha = 0;
             //设置一个缩放动画,防止缩放很丑,如果没有传原始图片的frame,并且不想要这个动画,直接把下面两句代码注释掉即可
-//            photo.bounds = CGRectMake(0, 0, 0, 0);
-//            photo.center = CGPointMake(ScreenWidth / 2, ScreenHeight /2);
+            //            photo.bounds = CGRectMake(0, 0, 0, 0);
+            //            photo.center = CGPointMake(ScreenWidth / 2, ScreenHeight /2);
             photo.alpha = 0;
         }else {
-            photo.frame = CGRectFromString(self.originalImageViewArr[scrollView.tag]);
+            photo.frame = CGRectFromString(self.originalImageViewArr[index]);
             self.blackView.alpha = 0;
         }
         
@@ -254,8 +259,6 @@
         [self removeFromSuperview];
         
     }];
-
-    
     
 }
 
@@ -359,6 +362,8 @@
         _bgScrollView.bounces = YES;
         _bgScrollView.showsHorizontalScrollIndicator = NO;
         _bgScrollView.backgroundColor =  [UIColor clearColor];
+        UITapGestureRecognizer *photoTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoTap:)];
+        [_bgScrollView addGestureRecognizer:photoTap];
         
     }
     
@@ -398,6 +403,13 @@
         _originalImageViewArr = [NSMutableArray array];
     }
     return _originalImageViewArr;
+}
+
+- (NSMutableArray *)smallScViewArray {
+    if (!_smallScViewArray) {
+        _smallScViewArray = [NSMutableArray array];
+    }
+    return _smallScViewArray;
 }
 
 - (UIButton *)saveBtn {

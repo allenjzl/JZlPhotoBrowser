@@ -21,6 +21,8 @@
 @property (nonatomic, strong) UIButton *saveBtn;
 /** 原始图片 */
 @property (nonatomic, strong) NSMutableArray *originalImageViewArr;
+/** 没涨图片的父视图(小的scrollview) */
+@property (nonatomic, strong) NSMutableArray *smallScViewArray;
 
 
 /**
