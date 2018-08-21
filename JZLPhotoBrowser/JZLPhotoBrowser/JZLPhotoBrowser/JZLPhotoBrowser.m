@@ -320,19 +320,22 @@
 
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    NSLog(@"%.f",scrollView.contentOffset.x);
-    if (scrollView.zoomScale == 1) {
-        NSInteger index = scrollView.contentOffset.x / ScreenWidth;
-        self.indexLbl.text = [NSString stringWithFormat:@"%ld / %ld",index + 1,self.urlArr.count];
-        if (self.index!= index ) {
-            self.index = index;
-            for (UIView *view in scrollView.subviews) {
-                if ([view isKindOfClass:[UIScrollView class]]) {
-                    UIScrollView *scrollView = (UIScrollView *)view;
-                    scrollView.zoomScale = 1.0;
-                }
+    int index = scrollView.contentOffset.x / ScreenWidth;
+    self.indexLbl.text = [NSString stringWithFormat:@"%d / %lu",index + 1,(unsigned long)self.urlArr.count];
+    if (self.index!= index ) {
+        
+        self.index = index;
+        
+        for (UIView *view in scrollView.subviews) {
+            
+            if ([view isKindOfClass:[UIScrollView class]]) {
+                UIScrollView *scrollView = (UIScrollView *)view;
+                scrollView.zoomScale = 1.0;
+  
             }
+            
         }
+        
     }
 }
 
